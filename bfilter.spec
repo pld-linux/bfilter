@@ -1,3 +1,4 @@
+
 %bcond_with gui		# Enable GTK+ UI (doesn't build)
 
 Summary:	A filtering Web proxy
@@ -43,13 +44,12 @@ heurystyczny algorytm rozpoznawania reklam.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-# create directories if necessary
-#install -d $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT/etc/init.d
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
-%{__install} -d $RPM_BUILD_ROOT/etc/init.d
-%{__install} -m 0755 %{SOURCE1} $RPM_BUILD_ROOT/etc/init.d/%{name}
+
+%{__install} %{SOURCE1} $RPM_BUILD_ROOT/etc/init.d/%{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -76,7 +76,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog INSTALL NEWS README VERSION doc/*.html doc/*.png
+%doc AUTHORS ChangeLog NEWS README doc/*.html doc/*.png
 %attr(755,root,root) %{_bindir}/%{name}
 %attr(755,root,root) /etc/init.d/%{name}
 %dir %{_sysconfdir}/%{name}
