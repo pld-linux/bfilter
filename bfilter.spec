@@ -80,7 +80,7 @@ fi
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README doc/*.html doc/*.png
 %attr(755,root,root) %{_bindir}/%{name}
-%attr(755,root,root) /etc/rc.d/init.d/%{name}
+%attr(754,root,root) /etc/rc.d/init.d/%{name}
 %dir %{_sysconfdir}/%{name}
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/%{name}/config
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/%{name}/rules.local
