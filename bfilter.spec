@@ -1,6 +1,7 @@
-
-%bcond_with gui		# Enable GTK+ UI (doesn't build)
-
+#
+# Conditional build:
+%bcond_with	gui	# Enable GTK+ UI (doesn't build)
+#
 Summary:	A filtering Web proxy
 Summary(pl):	Filtruj±ce proxy WWW
 Name:		bfilter
@@ -12,11 +13,11 @@ Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 # Source0-md5:	72ca85565bd4c556b06e3a264c0c24f1
 Source1:	%{name}.init
 URL:		http://bfilter.sf.net
-BuildRequires:	zlib-devel
-BuildRequires:	popt-devel
 BuildRequires:	libsigc++12-devel
-BuildRequires:	pkgconfig
 BuildRequires:	libstdc++-devel
+BuildRequires:	pkgconfig
+BuildRequires:	popt-devel
+BuildRequires:	zlib-devel
 Requires(post):	/usr/sbin/groupadd
 Requires(post):	/usr/sbin/useradd
 Requires(post,preun):	/sbin/chkconfig
@@ -29,9 +30,9 @@ remove popups and webbugs.  Its main advantage over the similar tools
 is its heuristic ad detection algorithm. 
 
 %description -l pl
-BFilter jest filtruj±cym proxy WWW.  Pierwotnie mia³ on filtrowaæ
-tylko bannery, jednak rozszerzono go o usuwanie popupów i innych
-reklam.  G³ówn± jego przewag± nad innymi tego rodzaju narzêdziami jest
+BFilter jest filtruj±cym proxy WWW. Pierwotnie mia³ on filtrowaæ tylko
+bannery, jednak rozszerzono go o usuwanie popupów i innych reklam.
+G³ówn± jego przewag± nad innymi tego rodzaju narzêdziami jest
 heurystyczny algorytm rozpoznawania reklam.
 
 %prep
@@ -44,22 +45,23 @@ heurystyczny algorytm rozpoznawania reklam.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/etc/init.d
+install -d $RPM_BUILD_ROOT/etc/rc.d/init.d
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-%{__install} %{SOURCE1} $RPM_BUILD_ROOT/etc/init.d/%{name}
+install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %pre
-groupadd -r -f %{name}
-useradd -r -s /bin/false -d / -M -g %{name} -c 'BFilter filtering proxy' %{name} || :
+# XXX: unify
+/usr/sbin/groupadd -r -f %{name}
+/usr/sbin/useradd -r -s /bin/false -d / -M -g %{name} -c 'BFilter filtering proxy' %{name}
 
 %post
-chkconfig --add %{name}
+/sbin/chkconfig --add %{name}
 if [ -f /var/lock/subsys/%{name} ]; then
         /etc/rc.d/init.d/%{name} restart 1>&2
 else
@@ -78,9 +80,9 @@ fi
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README doc/*.html doc/*.png
 %attr(755,root,root) %{_bindir}/%{name}
-%attr(755,root,root) /etc/init.d/%{name}
+%attr(755,root,root) /etc/rc.d/init.d/%{name}
 %dir %{_sysconfdir}/%{name}
-%config %{_sysconfdir}/%{name}/config
-%config %{_sysconfdir}/%{name}/rules.local
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/%{name}/config
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/%{name}/rules.local
 %{_sysconfdir}/%{name}/config.default
 %{_sysconfdir}/%{name}/rules
