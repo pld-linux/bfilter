@@ -26,7 +26,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description 
 BFilter is a filtering web proxy. It was originally intended for
 removing banner ads only, but at some point it has been extended to
-remove popups and webbugs.  Its main advantage over the similar tools
+remove popups and webbugs. Its main advantage over the similar tools
 is its heuristic ad detection algorithm. 
 
 %description -l pl
@@ -63,17 +63,17 @@ rm -rf $RPM_BUILD_ROOT
 %post
 /sbin/chkconfig --add %{name}
 if [ -f /var/lock/subsys/%{name} ]; then
-        /etc/rc.d/init.d/%{name} restart 1>&2
+	/etc/rc.d/init.d/%{name} restart 1>&2
 else
-        echo "Type \"/etc/rc.d/init.d/%{name} start\" to start %{name}." 1>&2
+	echo "Type \"/etc/rc.d/init.d/%{name} start\" to start %{name}." 1>&2
 fi
 
 %preun
 if [ "$1" = "0" ]; then
-        if [ -f /var/lock/subsys/%{name} ]; then
-                /etc/rc.d/init.d/%{name} stop 1>&2
-        fi
-        /sbin/chkconfig --del %{name}
+	if [ -f /var/lock/subsys/%{name} ]; then
+		/etc/rc.d/init.d/%{name} stop 1>&2
+	fi
+	/sbin/chkconfig --del %{name}
 fi
 
 %files
