@@ -14,6 +14,8 @@ URL:		http://bfilter.sf.net
 BuildRequires:	zlib-devel
 BuildRequires:	popt-devel
 BuildRequires:	libsigc++12-devel
+BuildRequires:	pkgconfig
+BuildRequires:	libstdc++-devel
 Requires(post):	/usr/sbin/groupadd
 Requires(post):	/usr/sbin/useradd
 Requires(post,preun):	/sbin/chkconfig
