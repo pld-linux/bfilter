@@ -1,0 +1,100 @@
+#!/bin/sh
+#
+# bfilter	A filtering Web proxy
+#
+# chkconfig:	345 90 10
+#
+# description:	BFilter is a filtering web proxy. It was originally \
+#		intended for removing banner ads only, but at some point \
+#		it has been extended to remove popups and webbugs. \
+#		Its main advantage over the similar tools is its heuristic \
+#		ad detection algorithm.
+#
+# $Id$
+
+
+# Source function library
+. /etc/rc.d/init.d/functions
+
+# Get network config
+. /etc/sysconfig/network
+
+# Check that networking is up.
+if is_yes "${NETWORKING}"; then
+	if [ ! -f /var/lock/subsys/network ]; then
+		# nls "ERROR: Networking is down. %s can't be run." bfilter
+		msg_network_down bfilter
+		exit 1
+	fi
+else
+	exit 0
+fi
+
+
+# See how we were called.
+case "$1" in
+  start)
+	# Check if the service is already running?
+	if [ ! -f /var/lock/subsys/bfilter ]; then
+		# show "Starting %s service" bfilter
+		msg_starting bfilter
+		daemon --user bfilter bfilter
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/bfilter
+	else
+		# show "%s service is already running." bfilter
+		msg_already_running bfilter
+	fi
+	;;
+  stop)
+	if [ -f /var/lock/subsys/bfilter ]; then
+		# Stop daemons.
+		# show "Stopping %s service" bfilter
+		msg_stopping bfilter
+		killproc bfilter
+		rm -f /var/lock/subsys/bfilter
+	else
+		# show "%s service is not running." bfilter
+		msg_not_running bfilter
+	fi
+	;;
+  restart)
+	$0 stop
+	$0 start
+	exit $?
+	;;
+  reload)
+	if [ -f /var/lock/subsys/bfilter ]; then
+		# show "Reload %s service" bfilter
+		msg_reloading bfilter
+		killproc bfilter -HUP
+		RETVAL=$?
+	else
+		# show "%s service is not running." bfilter
+		msg_not_running bfilter >&2
+		RETVAL=7
+	fi
+	;;
+  force-reload)
+	# if program allows reloading without stopping
+	$0 reload
+
+	# or if it doesn't
+	$0 restart
+
+	exit $?
+	;;
+  status)
+	status bfilter
+	RETVAL=$?
+	;;
+  *)
+	# show "Usage: %s {start|stop|restart|reload|force-reload|status}"
+	msg_usage "$0 {start|stop|restart|reload|force-reload|status}"
+	exit 3
+esac
+
+exit $RETVAL
+
+# This must be last line !
+# vi:syntax=sh:tw=78:ts=8:sw=4
