@@ -18,6 +18,8 @@ BuildRequires:	libstdc++-devel
 BuildRequires:	pkgconfig
 BuildRequires:	popt-devel
 BuildRequires:	zlib-devel
+BuildRequires:	rpmbuild(macros) >= 1.202
+BuildRequires:	broken-pre-scriptlet(fix user/group)
 Requires(post):	/usr/sbin/groupadd
 Requires(post):	/usr/sbin/useradd
 Requires(post,preun):	/sbin/chkconfig
@@ -57,8 +59,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %pre
 # XXX: unify
-/usr/sbin/groupadd -r -f %{name}
-/usr/sbin/useradd -r -s /bin/false -d / -M -g %{name} -c 'BFilter filtering proxy' %{name}
+# TODO register uid/gid in uid_gid.db.txt
+%groupadd -r -g XXX -f %{name}
+%useradd -r -u XXX -s /bin/false -d / -M -g %{name} -c 'BFilter filtering proxy' %{name}
 
 %post
 /sbin/chkconfig --add %{name}
