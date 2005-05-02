@@ -9,7 +9,7 @@ Version:	0.9.4
 Release:	1
 License:	GPL v2+
 Group:		Networking/Daemons
-Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+Source0:	http://dl.sourceforge.net/bfilter/%{name}-%{version}.tar.gz
 # Source0-md5:	72ca85565bd4c556b06e3a264c0c24f1
 Source1:	%{name}.init
 URL:		http://bfilter.sf.net
@@ -25,11 +25,11 @@ Requires(post):	/usr/sbin/useradd
 Requires(post,preun):	/sbin/chkconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%description 
+%description
 BFilter is a filtering web proxy. It was originally intended for
 removing banner ads only, but at some point it has been extended to
 remove popups and webbugs. Its main advantage over the similar tools
-is its heuristic ad detection algorithm. 
+is its heuristic ad detection algorithm.
 
 %description -l pl
 BFilter jest filtruj±cym proxy WWW. Pierwotnie mia³ on filtrowaæ tylko
@@ -85,7 +85,7 @@ fi
 %attr(755,root,root) %{_bindir}/%{name}
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 %dir %{_sysconfdir}/%{name}
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/%{name}/config
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/%{name}/rules.local
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/config
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/rules.local
 %{_sysconfdir}/%{name}/config.default
 %{_sysconfdir}/%{name}/rules
