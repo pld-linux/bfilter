@@ -22,7 +22,6 @@
 # Check that networking is up.
 if is_yes "${NETWORKING}"; then
 	if [ ! -f /var/lock/subsys/network ]; then
-		# nls "ERROR: Networking is down. %s can't be run." bfilter
 		msg_network_down bfilter
 		exit 1
 	fi
@@ -36,25 +35,21 @@ case "$1" in
   start)
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/bfilter ]; then
-		# show "Starting %s service" bfilter
 		msg_starting bfilter
 		daemon --user bfilter bfilter
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/bfilter
 	else
-		# show "%s service is already running." bfilter
 		msg_already_running bfilter
 	fi
 	;;
   stop)
 	if [ -f /var/lock/subsys/bfilter ]; then
 		# Stop daemons.
-		# show "Stopping %s service" bfilter
 		msg_stopping bfilter
 		killproc bfilter
 		rm -f /var/lock/subsys/bfilter
 	else
-		# show "%s service is not running." bfilter
 		msg_not_running bfilter
 	fi
 	;;
@@ -65,12 +60,10 @@ case "$1" in
 	;;
   reload)
 	if [ -f /var/lock/subsys/bfilter ]; then
-		# show "Reload %s service" bfilter
 		msg_reloading bfilter
 		killproc bfilter -HUP
 		RETVAL=$?
 	else
-		# show "%s service is not running." bfilter
 		msg_not_running bfilter >&2
 		RETVAL=7
 	fi
@@ -89,7 +82,6 @@ case "$1" in
 	RETVAL=$?
 	;;
   *)
-	# show "Usage: %s {start|stop|restart|reload|force-reload|status}"
 	msg_usage "$0 {start|stop|restart|reload|force-reload|status}"
 	exit 3
 esac
