@@ -13,13 +13,13 @@ Source0:	http://dl.sourceforge.net/bfilter/%{name}-%{version}.tar.gz
 # Source0-md5:	72ca85565bd4c556b06e3a264c0c24f1
 Source1:	%{name}.init
 URL:		http://bfilter.sf.net
+BuildRequires:	broken-pre-scriptlet(fix:user/group)
 BuildRequires:	libsigc++12-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	pkgconfig
 BuildRequires:	popt-devel
+BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	zlib-devel
-BuildRequires:	rpmbuild(macros) >= 1.202
-BuildRequires:	broken-pre-scriptlet(fix user/group)
 Requires(post):	/usr/sbin/groupadd
 Requires(post):	/usr/sbin/useradd
 Requires(post,preun):	/sbin/chkconfig
@@ -61,21 +61,15 @@ rm -rf $RPM_BUILD_ROOT
 # XXX: unify
 # TODO register uid/gid in uid_gid.db.txt
 %groupadd -r -g XXX -f %{name}
-%useradd -r -u XXX -s /bin/false -d / -M -g %{name} -c 'BFilter filtering proxy' %{name}
+%useradd -r -u XXX -s /bin/false -d / -M -g %{name} -c "BFilter filtering proxy" %{name}
 
 %post
 /sbin/chkconfig --add %{name}
-if [ -f /var/lock/subsys/%{name} ]; then
-	/etc/rc.d/init.d/%{name} restart 1>&2
-else
-	echo "Type \"/etc/rc.d/init.d/%{name} start\" to start %{name}." 1>&2
-fi
+%service %{name} restart
 
 %preun
 if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/%{name} ]; then
-		/etc/rc.d/init.d/%{name} stop 1>&2
-	fi
+	%service %{name} stop
 	/sbin/chkconfig --del %{name}
 fi
 
