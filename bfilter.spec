@@ -20,9 +20,11 @@ BuildRequires:	pkgconfig
 BuildRequires:	popt-devel
 BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	zlib-devel
-Requires(post):	/usr/sbin/groupadd
-Requires(post):	/usr/sbin/useradd
 Requires(post,preun):	/sbin/chkconfig
+Requires(pre):	/bin/id
+Requires(pre):	/usr/bin/getgid
+Requires(pre):	/usr/sbin/groupadd
+Requires(pre):	/usr/sbin/useradd
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
