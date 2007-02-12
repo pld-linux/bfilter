@@ -3,7 +3,7 @@
 %bcond_with	gui	# Enable GTK+ UI (doesn't build)
 #
 Summary:	A filtering Web proxy
-Summary(pl.UTF-8):   Filtrujące proxy WWW
+Summary(pl.UTF-8):	Filtrujące proxy WWW
 Name:		bfilter
 Version:	0.9.4
 Release:	1
