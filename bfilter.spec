@@ -3,7 +3,7 @@
 %bcond_with	gui	# Enable GTK+ UI (doesn't build)
 #
 Summary:	A filtering Web proxy
-Summary(pl):	Filtruj±ce proxy WWW
+Summary(pl.UTF-8):   FiltrujÄ…ce proxy WWW
 Name:		bfilter
 Version:	0.9.4
 Release:	1
@@ -33,10 +33,10 @@ removing banner ads only, but at some point it has been extended to
 remove popups and webbugs. Its main advantage over the similar tools
 is its heuristic ad detection algorithm.
 
-%description -l pl
-BFilter jest filtruj±cym proxy WWW. Pierwotnie mia³ on filtrowaæ tylko
-bannery, jednak rozszerzono go o usuwanie popupów i innych reklam.
-G³ówn± jego przewag± nad innymi tego rodzaju narzêdziami jest
+%description -l pl.UTF-8
+BFilter jest filtrujÄ…cym proxy WWW. Pierwotnie miaÅ‚ on filtrowaÄ‡ tylko
+bannery, jednak rozszerzono go o usuwanie popupÃ³w i innych reklam.
+GÅ‚Ã³wnÄ… jego przewagÄ… nad innymi tego rodzaju narzÄ™dziami jest
 heurystyczny algorytm rozpoznawania reklam.
 
 %prep
