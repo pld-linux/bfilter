@@ -13,7 +13,6 @@ Source0:	http://dl.sourceforge.net/bfilter/%{name}-%{version}.tar.gz
 # Source0-md5:	72ca85565bd4c556b06e3a264c0c24f1
 Source1:	%{name}.init
 URL:		http://bfilter.sf.net
-BuildRequires:	broken-pre-scriptlet(fix:user/group)
 BuildRequires:	libsigc++12-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	pkgconfig
@@ -60,19 +59,23 @@ install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 rm -rf $RPM_BUILD_ROOT
 
 %pre
-# XXX: unify
-# TODO register uid/gid in uid_gid.db.txt
-%groupadd -r -g XXX -f %{name}
-%useradd -r -u XXX -s /bin/false -d / -M -g %{name} -c "BFilter filtering proxy" %{name}
+%groupadd -r -g 199 %{name}
+%useradd -r -u 199 -s /bin/false -d / -g %{name} -c "BFilter filtering proxy" %{name}
 
 %post
 /sbin/chkconfig --add %{name}
-%service %{name} restart
+%service %{name} restart "BFilter filtering proxy"
 
 %preun
 if [ "$1" = "0" ]; then
 	%service %{name} stop
 	/sbin/chkconfig --del %{name}
+fi
+
+%postun
+if [ "$1" = "0" ]; then
+	%userremove %{name}
+	%groupremove %{name}
 fi
 
 %files
